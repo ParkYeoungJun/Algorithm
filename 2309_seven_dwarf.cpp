@@ -1,25 +1,45 @@
 #include<iostream>
 #include<stdio.h>
-#include<vector>
+#include<algorithm>
 
 using namespace std;
 
-std::vector<int> container;
-std::vector<int>::iterator iter;
-
 int main()
 {
-	for (int i = 0; i < 9; ++i)
-	{
-		int temp;
+    int sum_all = 0;
+    int input[10] = {0,};
 
-		scanf("%d", &temp);
+    for(int i = 0 ; i < 9 ; ++i)
+    {
+        int temp;
 
-		container.push_back(temp);
-	}
+        scanf("%d", &temp);
 
+        sum_all += temp;
 
+        input[i] = temp;
+    }
 
+    sort(input, input+9);
+
+    for(int i = 0 ; i < 9 ; ++i)
+    {
+        for(int j = i+1 ; j < 9 ; ++j)
+        {
+            if(sum_all - input[i] - input[j] == 100)
+            {
+                for(int k = 0 ; k < 9 ; ++k)
+                {
+                    if(k != i && k != j)
+                    {
+                        printf("%d\n", input[k]);
+                    }
+                }
+            }
+        }
+    }
+
+    
 
 	return 0;
 }
