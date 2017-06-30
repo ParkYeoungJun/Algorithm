@@ -1,0 +1,58 @@
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<queue>
+
+using namespace std;
+
+int dp[1002][1002];
+queue<pair<int, int> > output;
+
+int main()
+{
+    int size1, size2;
+	string input1, input2;
+
+    cin >> input1 >> input2;
+
+    input1 = '0' + input1;
+    input2 = '0' + input2;
+
+    size1 = input1.size();
+    size2 = input2.size();
+
+    for(int i = 1 ; i < size1 ; ++i)
+    {
+        for(int j = 1 ; j < size2 ; ++j)
+        {
+			if (input1.at(i) == input2.at(j))
+			{
+				dp[i][j] = dp[i - 1][j - 1] + 1;
+
+				if (dp[i][j] > dp[i - 1][j] && dp[i][j] > dp[i][j - 1])
+					output.push(make_pair(i, j));
+			}
+			else
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+        }
+    }
+
+	for (int i = 0; i < size1; ++i)
+	{
+		for (int j = 0; j < size2; ++j)
+			cout << dp[i][j] << " ";
+		cout << endl;
+	}
+
+	while (!output.empty())
+	{
+		pair<int, int> temp = output.front();
+
+		output.pop();
+
+		printf("%c", input1.at(temp.first));
+	}
+
+
+    return 0;
+}
