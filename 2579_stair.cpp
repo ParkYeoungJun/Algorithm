@@ -28,4 +28,6 @@ int main(void)
     }
 
     printf("%d", dp[size]);
+
+    return 0;
 }

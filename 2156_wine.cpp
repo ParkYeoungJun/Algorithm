@@ -3,6 +3,7 @@
 
 using namespace std;
 
+/*
 int max(int a, int b, int c)
 {
 	int temp_max = 0;
@@ -17,6 +18,7 @@ int max(int a, int b, int c)
 
 	return temp_max;
 }
+*/
 
 int main()
 {
@@ -34,7 +36,7 @@ int main()
 	dp[1] = input[1];
 	dp[2] = input[1] + input[2];
 	dp[3] = max(dp[2], dp[1] + input[3], input[2] + input[3]);
-
+	
 	for(int i = 4 ; i <= n ; ++i)
 	{
 		dp[i] = max(dp[i-3] + input[i-1] + input[i], dp[i-2] + input[i], dp[i-1]);

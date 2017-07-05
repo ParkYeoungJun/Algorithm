@@ -3,13 +3,13 @@
 
 using namespace std;
 
-#define mod 1000000
+#define mod 1000000000
 
 int main()
 {
 	int n;
-	int dp[102][12] = {0,};
-	int result = 0;
+	long long dp[102][12] = {0,};
+	long long result = 0;
 
 	scanf("%d", &n);
 
@@ -22,12 +22,19 @@ int main()
 	{
 		for(int j = 0 ; j <= 9 ; ++j)
 		{
-			dp[i][j] = dp[i-1][j-1] + dp[i-1][j+1];
+			if (j == 0)
+				dp[i][j] = dp[i - 1][j + 1] % mod;
+			else if (j == 9)
+				dp[i][j] = dp[i - 1][8] % mod;
+			else
+				dp[i][j] = (dp[i-1][j-1] + dp[i-1][j+1]) % mod;
 		}
 	}
 
 	for(int i = 0 ; i <= 9 ; ++i)
-		result += dp[n][i];
+		result += dp[n][i] % mod;
 
 	printf("%d", result % mod);
+
+	return 0;
 }

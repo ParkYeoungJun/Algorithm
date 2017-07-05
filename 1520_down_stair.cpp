@@ -15,6 +15,25 @@ int dy[5] = {1, 0, -1, 0};
 
 int dfs(int dfs_x, int dfs_y)
 {
+	/*
+	cout << "x : " << dfs_x << " y : " << dfs_y << endl;
+
+	for (int i = 1; i <= x; ++i)
+	{
+		for (int j = 1; j <= y; ++j)
+		{
+			if (i == dfs_x && j == dfs_y)
+				cout << "\'" << dp[i][j] << "\'" << " ";
+			else
+				cout << dp[i][j] << " ";
+		}
+
+		cout << endl;
+	}
+
+	cout << endl;
+	*/
+
 	if (dfs_x == x && dfs_y == y)
 		return 1;
 	else if (dp[dfs_x][dfs_y] >= 0)
@@ -32,8 +51,7 @@ int dfs(int dfs_x, int dfs_y)
 		}
 	}
 
-	return dp[dfs_x][dfs_y];
-	
+	return dp[dfs_x][dfs_y];	
 }
 
 int main()
@@ -53,10 +71,3 @@ int main()
 
 	return 0;
 }
-
-/*
-3 3
-5 4 3
-4 3 2
-3 2 9
-*/
