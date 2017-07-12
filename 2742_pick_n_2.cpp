@@ -1,4 +1,5 @@
 #include<iostream>
+#include<cstdio>
 
 using namespace std;
 
@@ -6,8 +7,8 @@ int main()
 {
     int n;
 
-    cin >> n;
+    scanf("%d", &n);
 
     for(int i = n ; i > 0 ; --i)
-        cout << i << endl;
+        printf("%d\n", i);
 }
