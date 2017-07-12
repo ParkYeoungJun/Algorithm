@@ -12,7 +12,7 @@ int main()
         printf("A");
     else if(n >= 80 && n < 90)
         printf("B");
-    else if(n >= 60 && n < 70)
+    else if(n >= 70 && n < 80)
         printf("C");
     else
         printf("F");
