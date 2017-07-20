@@ -12,7 +12,7 @@ int indegree[32005];
 
 void bfs()
 {
-	queue<int> que;
+	priority_queue<int, vector<int>, greater<int> > que;
 	int cnt = 0;
 
 	for (int i = 1; i <= n; ++i)
@@ -23,7 +23,7 @@ void bfs()
 
 	while (!que.empty())
 	{
-		int temp = que.front();
+		int temp = que.top();
 
 		que.pop();
 
@@ -64,10 +64,6 @@ int main()
 	}
 	
 	bfs();
-
-	cout << endl;
-
-	for (int i = 0; i <= cnt; ++i);
 
 	return 0;
 }
