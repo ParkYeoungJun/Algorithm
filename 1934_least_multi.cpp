@@ -4,6 +4,7 @@
 
 using namespace std;
 
+
 int main()
 {
 	int size, n, k, maxi, mini;
