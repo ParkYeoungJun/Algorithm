@@ -1,5 +1,5 @@
-#include<iostream>
-#include<cstdio>
+#include <iostream>
+#include <cstdio>
 
 using namespace std;
 
@@ -9,5 +9,5 @@ int main()
 
     scanf("%lf %lf", &a, &b);
 
-    printf("%.10lf", a/b);
+    printf("%.10lf", a / b);
 }

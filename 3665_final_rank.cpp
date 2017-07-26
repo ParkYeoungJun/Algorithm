@@ -38,7 +38,7 @@ int main() {
 
 			scanf("%d%d", &x, &y);
 
-			if (a[x][y]) {
+			if (g[x][y]) {
 				in[y]--;
 				in[x]++;
 			}
