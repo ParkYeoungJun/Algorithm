@@ -67,7 +67,6 @@ int main()
 				count++;
 			}
 		}
-
 		if(count > (n+1)/2)
 		{
 			printf("-1");
