@@ -9,6 +9,7 @@
         "utility": "cpp",
         "limits": "cpp",
         "cstdio": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "xlocale": "cpp"
     }
 }
