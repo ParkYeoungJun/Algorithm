@@ -7,7 +7,7 @@ using namespace std;
 #define INF 1 << 29
 
 int arr[20][20];
-int dp[1 << 16][20];
+int dp[1 << 20][20];
 int n;
 
 int TSP(int visit, int cur)
