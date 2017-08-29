@@ -28,8 +28,8 @@ void dfs(int cnt)
 	}
 }
 
-int main() 
-{
+int main()
+ {
 	scanf("%d", &n);
 
 	dfs(0);
