@@ -29,7 +29,7 @@ void dfs(int cnt)
 }
 
 int main()
- {
+{
 	scanf("%d", &n);
 
 	dfs(0);
