@@ -57,9 +57,6 @@ int Otsu(int Xsize, int Ysize, int** gImg, int** bImg){
 }
 */
 
-
-
-
 /*
 int dx[8] = {1,1,0,-1,-1,-1,0,1};
 int dy[8] = {0,1,1,1,0,-1,-1,-1};
@@ -103,7 +100,6 @@ void callgrass(int** bImg, int** lImg, int Xsize, int Ysize)
 	}
 }
 */
-
 
 // // 팽창
 // void dilation(int** gImg, int** gmImg, int Xsize, int Ysize)
@@ -177,7 +173,6 @@ void callgrass(int** bImg, int** lImg, int Xsize, int Ysize)
 //     }
 // }
 
-
 /*
 // cImg가 r,g,b 값을 갖는 객체로 가정시
 // rgb가 감마보정되지 않은 디지털 값으로 가정시
@@ -209,7 +204,6 @@ void yccTorgb(rgb** cImg, ycc** yImg, Xsize, Ysize)
 
 */
 
-
 /*
 // 1, 0 으로 binarization 실시 시
 // array counting 까지
@@ -237,4 +231,246 @@ int hough(int** bImg, int** hough, int Xsize, int Ysize)
     }
 }
 
+*/
+
+/*
+void LOG(double* kernel, float sigma) {
+    int fil, col, size = 3;
+    double sum = 0;
+    
+    for(int i = 0 ; i < size*size ; ++i) {
+        fil = (int) i/size;
+        col = i - size * fil;
+
+        int x = col - (int)(size/2);
+        int y = (int)(size/2) - fil;
+
+        kernel[i] = ((x*x + y*y - 2*sigma*sigma) / (sigma*sigma*sigma*sigma)) * exp(-(x*x + y*y) / (2*sigma*sigma));
+    }
+}
+
+void mhEdge(int** gImg, int** eImg, int w, int h, float sigma) {
+    
+    // 3*3의 LOG 필터 생성
+    double* kernel = malloc(3*3*sizeof(double));
+    double** lap = malloc(w*h*sizeof(double));
+    LOG(kernel, sigma);
+
+    // smooting
+    for(int i = 1 ; i < w ; ++i) {
+        for(int j = 1 ; j < h ; ++j) {
+
+            int v = 0;
+
+            for(int mx = 0 ; mx < 3 ; ++mx)
+                for(int my = 0 ; my < 3 ; ++my)
+                    v += kernel[mx*3 + my] * gImg[i + mx - 1][j + my -1];
+
+            v /= 3;
+
+            lap[i][j] = v;
+        }
+    }
+
+    // get threshold
+    double max_l = 0;
+    for(int i = 0 ; i < w ; ++i)
+        for(int j = 0 ; j < h ; ++j) {
+            if(abs(eImg[i][j] > max_l))
+                max_l = abs(lap[i][j]);
+        }
+
+    // find zero cross
+    for(int i = 1 ; i < w ; ++i) {
+        for(int j = 1 ; j < h ; ++j) {
+            if((lap[i-1][j] * lap[i+1][j] < 0) && (abs(lap[i-1][j] - lap[i+1][j]) > max_l))
+                eImg[i][j] = 255;
+            else if((lap[i][j-1] * lap[i][j+1] < 0) && (abs(lap[i][j-1] - lap[i][j+1]) > max_l))
+                eImg[i][j] = 255;
+            else if((lap[i-1][j-1] * lap[i+1][j+1] < 0) && (abs(lap[i-1][j-1] - lap[i+1][j+1]) > max_l))
+                eImg[i][j] = 255;
+            else if((lap[i+1][j-1] * lap[i-1][j+1] < 0) && (abs(lap[i+1][j-1] - lap[i-1][j+1]) > max_l))
+                eImg[i][j] = 255;
+        }    
+    }
+
+}
+*/
+
+/*
+int **filter(int **inImg, int w, int h, double sigma)
+{
+
+    double r, sum = 0.0, s = 2.0 * sigma * sigma;
+    double **kernel = calloc(w * h * sizeof(double));
+    int **outImg = malloc(w * h * sizeof(int));
+
+    for (int i = -2; i <= 2; ++i)
+    {
+        for (int j = -2; j <= 2; ++j)
+        {
+            r = sqrt(i * i + j * j);
+            kernel[i + 2][j + 2] = (exp(-(r * r) / s)) / (M_PI * s);
+            sum += kernel[i + 2][j + 2];
+        }
+    }
+
+    for (int i = 2; i < w; ++i)
+    {
+        for (int j = 2; j < h; ++j)
+        {
+            int v = 0;
+
+            for (int ki = 0; ki < 5; ++ki)
+            {
+                for (int kj = 0; kj < 5; ++kj)
+                {
+                    v += kernel[ki][kj] * inImg[i + ki - 2][j + kj - 2];
+                }
+            }
+
+            outImg = v / 20;
+        }
+    }
+
+    return outImg;
+}
+
+void sift(int **gImg, int w, int h)
+{
+    int **octave[5][30];
+
+    for (int i = 1; i <= 4; ++i)
+    {
+        // create octave
+        for (int j = 2; j <= 7; ++j)
+        {
+            int **tImg1, tImg2;
+            tImg1 = filter(gImg, w, h, j-1);
+            tImg2 = filter(gImg, w, h, j);
+
+            int** ocImg = malloc(w*h*sizeof(int));
+
+            for(int oi = 0 ; oi < w ; ++oi)
+                for(int oj = 0 ; oj < h ; ++oj)
+                    ocImg[oi][oj] = tImg1[oi][oj] - tImg2[oi][oj];
+
+            octave[i][j-1] = ocImg;
+        }
+
+        int** downImg = malloc((w/2)*(h/2)*sizeof(int));
+        // down sampling
+        for(int wi = 0 ; wi < w/2 ; ++wi) {
+            for(int wj = 0 ; wj < h/2 ; ++wj) {
+                downImg[wi][wj] = gImg[wi*2][wj*2];
+            }
+        }
+        free(gImg);
+        gImg = downImg;
+
+        w /= 2;
+        h /= 2;
+
+    }
+}
+
+*/
+
+
+/*
+void harris(int **bImg, int w, int h)
+{
+    int **dx, dy, dydx, dx2, dy2;
+    int kernel[3] = {-1, 0, 1};
+    int g[3][3] = {{0.075, 0.124, 0.075}, {0.124, 0.204, 0.124}, {0.075, 0.124, 0.075}};
+
+
+    // differential
+    dx = malloc(w * h * sizeof(int));
+    dy = malloc(w * h * sizeof(int));
+    dydx = malloc(w * h * sizeof(int));
+    dx2 = malloc(w * h * sizeof(int));
+    dy2 = malloc(w * h * sizeof(int));
+
+    for (int i = 0; i < w; ++i)
+        for (int j = 1; j < h - 1; ++j)
+            dx[i][j] = bImg[i][j - 1] * (-1) + bImg[i][j + 1];
+
+    for (int i = 1; i < w - 1; ++i)
+        for (int j = 0; j < h; ++j)
+            dy[i][j] = bImg[i - 1][j] * (-1) + bImg[i + 1][j];
+
+    for (int i = 0; i < w; ++i)
+        for (int j = 1; j < h - 1; ++j)
+            dydx[i][j] = dy[i][j - 1] * (-1) + dy[i][j + 1];
+
+    for (int i = 0; i < w; ++i)
+        for (int j = 1; j < h - 1; ++j)
+            dx2[i][j] = dx[i][j - 1] * (-1) + dx[i][j + 1];
+
+    for (int i = 1; i < w - 1; ++i)
+        for (int j = 0; j < h; ++j)
+            dy2[i][j] = dy[i + 1][j] * (-1) + dy[i + 1][j];
+
+
+    // gaussian
+    double **gdx, gdy, gdydx, gdx2, gdy2;
+
+    gdx = malloc(w * h * sizeof(double));
+    gdy = malloc(w * h * sizeof(double));
+    gdydx = malloc(w * h * sizeof(double));
+    gdx2 = malloc(w * h * sizeof(double));
+    gdy2 = malloc(w * h * sizeof(double));
+
+    for (int i = 1; i < w; ++i)
+    {
+        for (int j = 1; j < h; ++j)
+        {
+
+            double vdx = 0, vdy = 0, vdydx = 0, vdx2 = 0, vdy2 = 0;
+
+            for (int mx = 0; mx < 3; ++mx)
+                for (int my = 0; my < 3; ++my)
+                {
+                    vdx += g[mx][my] * dx[i + mx - 1][j + my - 1];
+                    vdy += g[mx][my] * dy[i + mx - 1][j + my - 1];
+                    vdydx += g[mx][my] * dydx[i + mx - 1][j + my - 1];
+                    vdx2 += g[mx][my] * dx2[i + mx - 1][j + my - 1];
+                    vdy2 += g[mx][my] * dy2[i + mx - 1][j + my - 1];
+                }
+
+            gdx[i][j] = vdx;
+            gdy[i][j] = vdy;
+            gdydx[i][j] = vdydx;
+            gdx2[i][j] = vdx2;
+            gdy2[i][j] = vdy2;
+        }
+    }
+
+    // find moment and calculate c value
+    // find keypoints using threshold
+
+    // k value
+    double k = 1;
+    double threshold = 0.1;
+
+    int** keypoints;
+    keypoints = malloc(w*h*sizeof(int));
+
+    for(int i = 0 ; i < w ; ++i) {
+        for(int j = 0 ; j < h ; ++j) {
+            double p, r, q, c;
+
+            p = gdy2[i][j];
+            r = gdydx[i][j];
+            q = gdx2[i][j];
+
+            c = (p*q - r*r) - k*((p + q)*(p + q));
+
+            if(c > threshold) { 
+                keypoints[i][j] = 1;
+            }
+        }
+    }
+}
 */
