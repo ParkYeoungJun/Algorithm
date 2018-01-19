@@ -474,3 +474,31 @@ void harris(int **bImg, int w, int h)
     }
 }
 */
+
+//SPTA
+
+int** spta(int** bImg, int w, int h) {
+   
+    // initialize
+    int** tImg;
+    tImg = malloc(w*h*sizeof(int));
+    for(int i = 0 ; i < w ; ++i) 
+        for(int j = 0 ; j < h ; ++j) 
+            tImg[i][j] = bImg[i][j];
+
+    for(int i = 1 ; i < w-1 ; ++i) {
+        for(int j = 1 ; j < h-1 ; ++j) {
+            int n0=bImg[i][j+1], n1=bImg[i+1][j+1], n2=bImg[i+1][j], n3=bImg[i+1][j-1], n4=bImg[i][j-1],
+                n5=bImg[i-1][j-1], n6=bImg[i-1][j], n7=bImg[i-1][j+1];
+
+            if(bImg[i][j] == 1 &&
+            ((!n0 && (n4 && (n5 || n6 || n2 || n3) && (n6 || !n7) && (n2 || !n1)))
+            || (!n4 && (n0 && (n1 || n2 || n6 || n7) && (n2 || !n3) && (n6 || !n5)))
+            || (!n2 && (n6 && (n7 || n0 || n4 || n5) && (n0 || !n1) && (n4 || !n3)))
+            || (!n6 && (n2 && (n3 || n4 || n0 || n1) && (n4 || !n5) && (n0 || !n7)))))
+                tImg[i][j] = 0;
+        }
+    }
+
+    return tImg;
+}
