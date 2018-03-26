@@ -1,48 +1,47 @@
-#include <cstdio>
-#include <cstring>
-#include <cstdlib>
-#include <cmath>
-#include <iostream>
+#include<stdio.h>
 
-using namespace std;
-int ptr[15][15];
-int dxp[15][15];
-int dxp2[15][15];
-double gdx[15][15];
-	
+int main()
+{
+    int player[3]; //플레이어 3명
+    int num[50];
+    int i,j=0;
 
-int main(void) {
+    printf("Game start\n");
 
-	double g[3][3] = {{0.075, 0.124, 0.075}, {0.124, 0.204, 0.124}, {0.075, 0.124, 0.075}};
-	int dx[3] = {-1,0,1};
+    for(i=1;i<=3;i++)
+    {
+        if(i==4) i=1;
 
-	for(int i = 0 ; i < 12 ; ++i)
-		for(int j = 0 ; j < 12 ; ++j)
-			cin >> ptr[i][j];
+        scanf("%d", &num[j]); //i번째 플레이어 숫자 입력
 
-	for(int i = 0 ; i < 12 ; ++i)
-		for(int j = 1 ; j < 11 ; ++j) {
-				dxp[i][j] = ptr[i][j - 1]*(-1) + ptr[i][j+1];
-		}
+		printf("asdf\n");
 
-	
-	for(int i = 1 ; i < 12 ; ++i) {
-        for(int j = 1 ; j < 12 ; ++j) {
 
-            double v = 0;
-
-            for(int mx = 0 ; mx < 3 ; ++mx)
-                for(int my = 0 ; my < 3 ; ++my)
-                    v += g[mx][my] * dxp[i + mx - 1][j + my -1];
-
-			gdx[i][j] = v;
+        if(num[j] == 30)
+        {
+            if(i==3) i-=2;
+            printf("player %d lose !\n",i);
+            break;
         }
-    }
+        if(num[j] == 31)
+        {
+            printf("player %d lose !\n",i);
+            break;
+        }
 
-	for(int i = 0 ; i < 12 ; ++i){
-		for(int j = 0 ; j < 12 ; ++j)
-			cout << dxp[i][j] << " ";
-		cout << endl;
-	}
+		printf("asdf\n");
+
+        if(num[j]-num[j-1] >3 || num[0]>3)
+        {
+            --i;
+            continue;
+        }
+
+
+		printf("asdf\n");
+
+        printf("player %d : %d ",i+1,num[j]); //1번 플레이어
+        j++;
+    }
 
 }
