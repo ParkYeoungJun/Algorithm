@@ -6,7 +6,6 @@
 using namespace std;
 
 int arr[25][25];
-int maxi[25];
 bool visit[25];
 
 int main()
@@ -132,10 +131,12 @@ int main()
 
             if (flag)
             {
+                // printf("i : %d\n", i);
                 cnt++;
             }
         }
 
+        // printf("%d\n", cnt);
 
         for (int i = 0; i < n; ++i)
         {
@@ -144,9 +145,9 @@ int main()
 
             for (int j = 0; j < n - 1; ++j)
             {
-                if (arr[j][i] > arr[j+1][i])
+                if (arr[j][i] > arr[j + 1][i])
                 {
-                    if (arr[j][i] - arr[j+1][i] > 1)
+                    if (arr[j][i] - arr[j + 1][i] > 1)
                     {
                         flag = false;
                         break;
@@ -167,7 +168,7 @@ int main()
 
                             for (k = j + 1; k < x + j; ++k)
                             {
-                                if (arr[k][i] != arr[k+1][i])
+                                if (arr[k][i] != arr[k + 1][i])
                                 {
                                     diff = false;
                                     break;
@@ -193,9 +194,9 @@ int main()
                         }
                     }
                 }
-                else if (arr[j][i] < arr[j+1][i])
+                else if (arr[j][i] < arr[j + 1][i])
                 {
-                    if (arr[j+1][i] - arr[j][i] > 1)
+                    if (arr[j + 1][i] - arr[j][i] > 1)
                     {
                         flag = false;
                         break;
@@ -221,7 +222,7 @@ int main()
                                     break;
                                 }
 
-                                if (arr[k][i] != arr[k-1][i])
+                                if (arr[k][i] != arr[k - 1][i])
                                 {
                                     diff = false;
                                     break;
@@ -238,9 +239,9 @@ int main()
                 }
             }
 
-
             if (flag)
             {
+                // printf("i : %d\n", i);
                 cnt++;
             }
         }
