@@ -12,15 +12,10 @@ typedef struct _linked {
 } LINK;
 
 int N;
-// int dp[1000002][2];
-// bool visit[1000002];
-// LINK* head[1000002];
-// LINK* tail[1000002];
-
-int (*dp)[2];
-bool* visit;
-LINK** head;
-LINK** tail;
+int dp[1000002][2];
+bool visit[1000002];
+LINK* head[1000002];
+LINK* tail[1000002];
 
 void insert(int x, int y) {
 
@@ -61,12 +56,6 @@ void dfs(int s) {
 int main()
 {
     scanf("%d", &N);
-
-    dp = new int[N + 1][2];
-    visit = (bool *) malloc(sizeof(bool) * (N+1));
-    head = (LINK **) malloc(sizeof(LINK *) * (N+1));
-    tail = (LINK **) malloc(sizeof(LINK *) * (N+1));
-
 
     for(int i = 0 ; i < N-1 ; ++i) {
         int tmpX, tmpY;

@@ -1,7 +1,7 @@
-#include<iostream>
+//#include<iostream>
 #include<cstdio>
 
-using namespace std;
+//using namespace std;
 
 int N, M;
 long long int arr[1005][1005];
