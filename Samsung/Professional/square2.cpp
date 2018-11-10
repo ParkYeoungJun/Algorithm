@@ -92,31 +92,19 @@ int main()
             }
         }
 
+
         int ans = 0;
-
-        for(int i = k ; i; i = ((i - 1) & k)){
-            int x = (~i & k)
-            if (half[i] && half[x]){ 
-                                           ans = max(ans, sum[i] * sum[j] / 4);
-
+        for (int i = k; i; i = ((i - 1) & k))
+        {
+            int x = (~i & k);
+            for (int j = x; j; j = ((j - 1) & x))
+            {
+                if (half[i] && half[j])
+                {
+                    ans = max(ans, sum[i] * sum[j] / 4);
+                }
             }
-
-
         }
-
-
-        // int ans = 0;
-        // for (int i = k; i; i = ((i - 1) & k))
-        // {
-        //     int x = (~i & k);
-        //     for (int j = x; j; j = ((j - 1) & x))
-        //     {
-        //         if (half[i] && half[j])
-        //         {
-        //             ans = max(ans, sum[i] * sum[j] / 4);
-        //         }
-        //     }
-        // }
         printf("%d\n", ans);
     }
 }
