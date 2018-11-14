@@ -30,30 +30,29 @@ void calSameRow(){
         DIST[y][0][y][0] = TABLE[y][0];
         DIST[y][1][y][1] = TABLE[y][C - 1];
 
-        int min_dist = rowDist(y, 0, C - 1);
-        int col_dist = 0;
+        int minDist = rowDist(y, 0, C - 1);
+        int colDist = 0;
 
         for (int y2 = y + 1; y2 < R; ++y2) {
-            col_dist += TABLE[y2 - 1][0] + TABLE[y2 - 1][C - 1];
-            min_dist = min(min_dist, col_dist + rowDist(y2, 0, C - 1));
+            colDist += TABLE[y2 - 1][0] + TABLE[y2 - 1][C - 1];
+            minDist = min(minDist, colDist + rowDist(y2, 0, C - 1));
         }
 
-        col_dist = 0;
+        colDist = 0;
 
         for (int y2 = y - 1; y2 >= 0; --y2) {
-            col_dist += TABLE[y2 + 1][0] + TABLE[y2 + 1][C - 1];
-            min_dist = min(min_dist, col_dist + rowDist(y2, 0, C - 1));
+            colDist += TABLE[y2 + 1][0] + TABLE[y2 + 1][C - 1];
+            minDist = min(minDist, colDist + rowDist(y2, 0, C - 1));
         }
 
-        DIST[y][1][y][0] = DIST[y][0][y][1] = min_dist;
+        DIST[y][1][y][0] = DIST[y][0][y][1] = minDist;
     }
 }
 
 
-long long getResult()
-{
+long long getResult() {
     int ux, uy, vx, vy;
-    long long dist_sum = TABLE[0][0];
+    long long distSum = TABLE[0][0];
 
     ux = uy = 0;
 
@@ -61,20 +60,20 @@ long long getResult()
         vy = LOCS[i].y;
         vx = LOCS[i].x;
 
-        int dist_from_u_to_v = min(DIST[uy][0][vy][0] - TABLE[uy][0] - TABLE[vy][0] + rowDist(uy, 0, ux) + rowDist(vy, 0, vx),
+        int d = min(DIST[uy][0][vy][0] - TABLE[uy][0] - TABLE[vy][0] + rowDist(uy, 0, ux) + rowDist(vy, 0, vx),
                                    DIST[uy][0][vy][1] - TABLE[uy][0] - TABLE[vy][C - 1] + rowDist(uy, 0, ux) + rowDist(vy, vx, C - 1));
-        dist_from_u_to_v = min(dist_from_u_to_v, DIST[uy][1][vy][0] - TABLE[uy][C - 1] - TABLE[vy][0] + rowDist(uy, ux, C - 1) + rowDist(vy, 0, vx));
-        dist_from_u_to_v = min(dist_from_u_to_v, DIST[uy][1][vy][1] - TABLE[uy][C - 1] - TABLE[vy][C - 1] + rowDist(uy, ux, C - 1) + rowDist(vy, vx, C - 1));
+        d = min(d, DIST[uy][1][vy][0] - TABLE[uy][C - 1] - TABLE[vy][0] + rowDist(uy, ux, C - 1) + rowDist(vy, 0, vx));
+        d = min(d, DIST[uy][1][vy][1] - TABLE[uy][C - 1] - TABLE[vy][C - 1] + rowDist(uy, ux, C - 1) + rowDist(vy, vx, C - 1));
 
-        if (uy == vy) dist_from_u_to_v = min(dist_from_u_to_v, rowDist(uy, ux, vx));
+        if (uy == vy) d = min(d, rowDist(uy, ux, vx));
 
-        dist_sum += dist_from_u_to_v - TABLE[uy][ux];
+        distSum += d - TABLE[uy][ux];
 
         ux = vx;
         uy = vy;
     }
 
-    return dist_sum;
+    return distSum;
 }
 
 int main()
@@ -107,15 +106,14 @@ int main()
 
     calSameRow();
     
-
     // min dist
-    for (int uy = 0; uy < R; ++uy) {
-        for (int ux = 0; ux < 2; ++ux) {
-            for (int vy = uy + 1; vy < R; ++vy) {
-                for (int vx = 0; vx < 2; ++vx) {
-                    DIST[uy][ux][vy][vx] = DIST[vy][vx][uy][ux] = min(
-                        DIST[uy][ux][vy - 1][0] + DIST[vy][0][vy][vx],
-                        DIST[uy][ux][vy - 1][1] + DIST[vy][1][vy][vx]);
+    for (int i = 0; i < R; ++i) {
+        for (int j = 0; j < 2; ++j) {
+            for (int k = i + 1; k < R; ++k) {
+                for (int h = 0; h < 2; ++h) {
+                    DIST[i][j][k][h] = DIST[k][h][i][j] = min(
+                        DIST[i][j][k - 1][0] + DIST[k][0][k][h],
+                        DIST[i][j][k - 1][1] + DIST[k][1][k][h]);
                 }
             }
         }
@@ -124,4 +122,6 @@ int main()
 
     long long res = getResult();
     printf("%lld", res);
+
+    return 0;
 }
